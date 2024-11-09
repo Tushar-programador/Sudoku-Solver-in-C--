@@ -21,7 +21,7 @@ To get started with the Sudoku Solver, follow these steps:
 
 1. **Clone the repository** (or copy the code into a file):
    ```bash
-   git clone https://github.com/Tushar-programador/sudoku-solver.git
+   git clone https://github.com/Tushar-programador/Sudoku-Solver-in-C--.git
    
 2. **Navigate to the project directory**:
    ```bash
