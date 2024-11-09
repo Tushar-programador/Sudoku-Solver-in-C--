@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 using namespace std;
 #define N 9
 
@@ -53,7 +54,7 @@ bool isSafe(int grid[N][N], int row, int col, int num)
 }
 
 // Function to solve the Sudoku using backtracking
-bool solveSudoku(int grid[N][N])
+bool solveSudoku(int grid[N][N], int &recursionCount)
 {
     int row, col;
     bool isEmpty = false;
@@ -87,18 +88,36 @@ bool solveSudoku(int grid[N][N])
         if (isSafe(grid, row, col, num))
         {
             grid[row][col] = num;
+            recursionCount++;
 
-            if (solveSudoku(grid))
+            if (solveSudoku(grid, recursionCount))
             {
                 return true;
             }
 
-            // Backtrack if placing 'num' does not lead to a solution
+        
             grid[row][col] = 0;
         }
     }
 
     return false; 
+}
+
+// Function to generate a random Sudoku puzzle 
+void generatePuzzle(int grid[N][N], int filledCells)
+{
+    
+    srand(time(0));
+    for (int i = 0; i < filledCells; i++)
+    {
+        int row = rand() % N;
+        int col = rand() % N;
+        int num = rand() % 9 + 1;
+        if (grid[row][col] == 0 && isSafe(grid, row, col, num))
+        {
+            grid[row][col] = num;
+        }
+    }
 }
 
 int main()
@@ -114,14 +133,29 @@ int main()
         {0, 0, 0, 4, 1, 9, 0, 0, 5},
         {0, 0, 0, 0, 8, 0, 0, 7, 9}};
 
-    if (solveSudoku(grid))
+    int recursionCount = 0;
+
+   
+    cout << "Initial Sudoku Puzzle:" << endl;
+    printGrid(grid);
+
+    // Solve the puzzle
+    if (solveSudoku(grid, recursionCount))
     {
+        cout << "\nSolved Sudoku Puzzle:" << endl;
         printGrid(grid);
+        cout << "\nTotal Recursion Calls: " << recursionCount << endl;
     }
     else
     {
         cout << "No solution exists" << endl;
     }
+
+
+    cout << "\nGenerated Sudoku Puzzle:" << endl;
+    int newGrid[N][N] = {0}; // Clear the grid
+    generatePuzzle(newGrid, 30);
+    printGrid(newGrid);
 
     return 0;
 }
